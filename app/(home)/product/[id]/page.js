@@ -16,7 +16,9 @@ const ProductPage = () => {
 
     // Retrieve the 'category' query parameter from the URL
     const searchParams = useSearchParams();
+    console.log("searchParams: ", searchParams);
     const category = searchParams.get("collection");
+    console.log("category: ", decodeURIComponent(category));
 
     const uid = decodeURIComponent(id);
 

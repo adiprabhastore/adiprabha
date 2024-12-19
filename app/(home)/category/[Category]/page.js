@@ -71,7 +71,11 @@ const Page = () => {
                                 {" "}
                                 {/* Adjusted the width to create a portrait layout */}
                                 <Link
-                                    href={`/product/${item.id}?collection=${item.product.category}`}
+                                    href={`/product/${
+                                        item.id
+                                    }?collection=${encodeURIComponent(
+                                        item.product.category
+                                    )}`}
                                 >
                                     {item && item.imageUrls.length > 0 && (
                                         <img

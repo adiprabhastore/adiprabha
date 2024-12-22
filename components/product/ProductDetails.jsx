@@ -493,6 +493,10 @@ const ProductDetails = ({ id, category }) => {
                                                                 item.key
                                                             ]
                                                         }
+                                                        {item.label ==
+                                                            "Weight" && (
+                                                            <span> gms</span>
+                                                        )}
                                                     </span>
                                                 </li>
                                             );

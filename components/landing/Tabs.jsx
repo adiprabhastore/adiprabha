@@ -131,43 +131,48 @@ export function SimpleSlider({ tabData, activeTab }) {
         ],
     };
     return (
-        <Slider {...settings}>
-            {tabData[activeTab].length > 0 &&
-                tabData[activeTab]?.map((item, index) => (
-                    <div key={index} className="carousel-item mt-5">
-                        <div className="bg-white rounded-lg p-4 w-[21rem] mx-auto border border-red-500">
-                            {/* Adjusted the width to create a portrait layout */}
-                            <Link
-                                href={`/product/${item.id}?collection=${item.category}`}
-                            >
-                                {item && item.imageUrls.length > 0 && (
-                                    <div className="w-full h-[300px] mb-4">
-                                        <img
-                                            src={item?.imageUrls[0]}
-                                            alt={item?.imageUrls[0]}
-                                            className="w-full h-full object-cover rounded-md"
-                                        />
-                                    </div>
-                                )}
-                                <h3 className="text-[1rem] leading-5 font-semibold">
-                                    {item.product.name}
-                                </h3>
-                                <p className="text-sm mt-2">
-                                    MRP:{" "}
-                                    <span className="font-medium mx-2">
-                                        ₹ {item.product.price}
-                                    </span>
-                                    {item.product.strikePrice && (
-                                        <span className="text-red-500 text-sm mt-1 line-through">
-                                            {item.product.strikePrice}
-                                        </span>
-                                    )}
-                                </p>
-                            </Link>
-                        </div>
+      <Slider {...settings}>
+        {tabData[activeTab].length > 0 &&
+          tabData[activeTab]?.map((item, index) => (
+            <div key={index} className="carousel-item mt-5">
+              <div className="bg-white rounded-lg p-4 w-[21rem] mx-auto border border-red-500">
+                {/* Adjusted the width to create a portrait layout */}
+                <Link href={`/product/${item.id}?collection=${item.category}`}>
+                  {item && item.imageUrls.length > 0 && (
+                    <div className="w-full h-[300px] mb-4">
+                      <img
+                        src={item?.imageUrls[0]}
+                        alt={item?.imageUrls[0]}
+                        className="w-full h-full object-cover rounded-md"
+                      />
                     </div>
-                ))}
-        </Slider>
+                  )}
+                  <h3 className="text-[1rem] leading-5 font-semibold">
+                    {item.product.name}
+                  </h3>
+                  <p className="text-sm mt-2">
+                    MRP:{" "}
+                    {/* <span className="font-medium mx-2">
+                      ₹ {item.product.price}
+                    </span> */}
+                    <span className="font-medium mx-2">
+                      ₹{" "}
+                      {(parseInt(item?.product?.price) || 0) +
+                        (parseInt(item?.product?.Shipping) || 0) +
+                        (parseInt(item?.product?.Sourcing) || 0) -
+                        (parseInt(item?.product.Discount) || 0)}
+                    </span>
+                    {item.product.strikePrice && (
+                      <span className="text-red-500 text-sm mt-1 line-through">
+                        {item.product.strikePrice}
+                      </span>
+                    )}
+                  </p>
+                </Link>
+              </div>
+            </div>
+          ))}
+      </Slider>
     );
 }
 

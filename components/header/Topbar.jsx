@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import { LogIn, LogOut, ShoppingBag, Search, Logs, Star } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { adminEmail } from "@/data/siteData";
-// import ComboboxDemo from "@/components/ComboboxDemo"; // Assuming you have ComboboxDemo component separately
 
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { auth, db } from "@/db/firebase"; // Ensure you import the Firestore instance

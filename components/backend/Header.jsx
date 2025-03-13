@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { LogIn, LogOut, ShoppingBag, Search, Logs } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { adminEmail } from "@/data/siteData";
-// import ComboboxDemo from "@/components/ComboboxDemo"; // Assuming you have ComboboxDemo component separately
+
 
 const Header = ({ search, setSearch, type, setType }) => {
     const { user, loading } = useAuth();
@@ -18,13 +18,12 @@ const Header = ({ search, setSearch, type, setType }) => {
         return <p>Loading...</p>; // Simple loading message or spinner
     }
 
-    const handleSearch = () => {
-        console.log("search changed", search);
+   const handleSearch = () => {
+     console.log("search changed", searchValue);
+     const searchType = type || "ISBN";
 
-        // const type = type ? type : "ISBN";
-        // router.push(`/backend/search?type=${type}&query=${search}`);
-        setSearch(searchValue);
-    };
+     router.push(`/backend/search?type=${searchType}&query=${searchValue}`);
+   };
 
     return (
         <header className="w-full mx-auto px-1">
@@ -39,8 +38,6 @@ const Header = ({ search, setSearch, type, setType }) => {
                         type="text"
                         placeholder="Search by book name or ISBN"
                         className="flex-grow ml-5 px-4 py-2 focus:outline-none tracking-wider text-gray-700"
-                        // value={search}
-                        // onChange={(e) => setSearch(e.target.value)}
                         value={searchValue}
                         onChange={(e) => setSearchValue(e.target.value)}
                         onKeyDown={(e) => {

@@ -13,11 +13,9 @@ import Upload from "@/components/backend/Upload";
 // need to shift it
 const Index = () => {
     const [selectedSection, setSelectedSection] = useState("Dashboard");
-    const [type, setType] = useState("");
 
     const router = useRouter();
     const { user, loading } = useAuth();
-    const [search, setSearch] = useState("");
 
     if (!loading && !user) {
         return <Login />;
@@ -33,27 +31,17 @@ const Index = () => {
     return (
         <div className="h-screen overflow-y-hidden">
             <div className="flex ">
-                {/* Pass selectedSection to Sidebar */}
                 <Sidebar
                     setSelectedSection={setSelectedSection}
                     selectedSection={selectedSection}
                 />
 
                 <div className="relative flex flex-col w-full h-full">
-                    <Header
-                        search={search}
-                        setSearch={setSearch}
-                        type={type}
-                        setType={setType}
-                    />
+                    
                     <main className="h-screen pb-20 overflow-auto overflow-y-auto overscroll-y-auto">
                         <div className="mx-auto ">
                             <SectionContent
                                 section={selectedSection}
-                                search={search}
-                                setSearch={setSearch}
-                                type={type}
-                                setType={setType}
                             />
                         </div>
                     </main>
@@ -62,16 +50,11 @@ const Index = () => {
         </div>
     );
 };
-// /sdfdf
-const SectionContent = ({ section, search, setSearch, type, setType }) => {
+const SectionContent = ({ section}) => {
     switch (section) {
         case "Dashboard":
             return (
                 <Dashboard
-                    search={search}
-                    setSearch={setSearch}
-                    type={type}
-                    setType={setType}
                 />
             );
         case "Upload":

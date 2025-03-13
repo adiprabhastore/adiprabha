@@ -6,16 +6,6 @@ import { getUserCart } from "@/api/cart-wishlist/getUserCartWishlist";
 import { useAuth } from "@/hooks/useAuth";
 
 import globalStore from "@/store/globalStore";
-// const geistSans = localFont({
-//     src: "./fonts/GeistVF.woff",
-//     variable: "--font-geist-sans",
-//     weight: "100 900",
-// });
-// const geistMono = localFont({
-//     src: "./fonts/GeistMonoVF.woff",
-//     variable: "--font-geist-mono",
-//     weight: "100 900",
-// });
 
 export default function Home() {
     const { cartItems, addToCart, removeFromCart, isInCart } = globalStore();

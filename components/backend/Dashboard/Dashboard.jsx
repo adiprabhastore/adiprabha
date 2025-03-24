@@ -387,7 +387,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { fetchBookByItemCode } from "@/api/search/fetchBookByITEMCODE";
+import { fetchBookByItemCode } from "@/api/search/fetchBookByItemCode";
 
 function ComboboxDemo({ type, setType }) {
   const [open, setOpen] = useState(false);

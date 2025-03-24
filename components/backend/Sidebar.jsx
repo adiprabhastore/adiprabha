@@ -6,8 +6,8 @@ const Sidebar = ({ setSelectedSection, selectedSection }) => {
         menu: [
             { name: "Dashboard", icon: "" },
             { name: "Upload", icon: "" },
-            { name: "Profile", icon: "" },
-            { name: "Contact Us", icon: "" },
+            // { name: "Profile", icon: "" },
+            // { name: "Contact Us", icon: "" },
             // { name: "Settings", icon: "" },
         ],
         // others: [

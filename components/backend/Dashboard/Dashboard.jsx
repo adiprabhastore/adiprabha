@@ -53,7 +53,6 @@ const Home = () => {
 
   const handleSearch = async () => {
     console.log("search changed", search);
-    // Reset pagination on new search
     setCurrentPage(1);
 
     try {
@@ -64,6 +63,8 @@ const Home = () => {
           resultData = await fetchBooksByName(search);
         } else if (type === "ISBN") {
           resultData = await fetchBookByISBN(search);
+        } else if (type === "ITEM CODE") {
+          resultData = await fetchBookByItemCode(search);
         }
         if (!resultData.length) {
           console.log("No data found");
@@ -169,7 +170,9 @@ const Table = ({ data, setShowUpdateComp, setId, setColln }) => {
               <th className="px-4 py-3">Name</th>
 
               <th className="px-4 py-3">Category</th>
-              <th className="px-4 py-3">PRICE + SHIPPING + SOURCING - DISCOUNT</th>
+              <th className="px-4 py-3">
+                PRICE + SHIPPING + SOURCING - DISCOUNT
+              </th>
               <th className="px-4 py-3">Author</th>
               <th className="px-4 py-3">ISBN</th>
               <th className="px-4 py-3">Actions</th>
@@ -210,9 +213,15 @@ const Table = ({ data, setShowUpdateComp, setId, setColln }) => {
                   <td className="px-4 py-3 text-sm">{book.product.category}</td>
                   <td className="px-4 py-3 text-sm">
                     {book.product.price}{" "}
-                    {book?.product?.Shipping ? ` + ${book?.product?.Shipping}`: 0}
-                    {book?.product?.Sourcing ? ` + ${book?.product?.Sourcing}`: 0}
-                    {book?.product?.Discount ? ` - ${book?.product?.Discount}`: 0}
+                    {book?.product?.Shipping
+                      ? ` + ${book?.product?.Shipping}`
+                      : 0}
+                    {book?.product?.Sourcing
+                      ? ` + ${book?.product?.Sourcing}`
+                      : 0}
+                    {book?.product?.Discount
+                      ? ` - ${book?.product?.Discount}`
+                      : 0}
                   </td>
 
                   <td className="px-4 py-3 text-sm max-w-xs">
@@ -355,6 +364,10 @@ const frameworks = [
     type: "ISBN",
     label: "ISBN",
   },
+  {
+    type: "ITEM CODE",
+    label: "ITEM CODE",
+  },
 ];
 
 import { Check, ChevronsUpDown } from "lucide-react";
@@ -374,6 +387,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { fetchBookByItemCode } from "@/api/search/fetchBookByITEMCODE";
 
 function ComboboxDemo({ type, setType }) {
   const [open, setOpen] = useState(false);

@@ -59,19 +59,19 @@ const SectionContent = ({ section}) => {
             );
         case "Upload":
             return <Upload />;
-        case "Profile":
-            return (
-                <div className="text-3xl font-bold text-purple-600">
-                    User Profile Details
-                </div>
-            );
+        // case "Profile":
+        //     return (
+        //         <div className="text-3xl font-bold text-purple-600">
+        //             User Profile Details
+        //         </div>
+        //     );
 
-        case "Contact Us":
-            return (
-                <div className="text-3xl font-bold text-red-600">
-                    System Settings
-                </div>
-            );
+        // case "Contact Us":
+        //     return (
+        //         <div className="text-3xl font-bold text-red-600">
+        //             System Settings
+        //         </div>
+        //     );
         default:
             return <Dashboard />;
     }

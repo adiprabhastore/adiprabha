@@ -154,7 +154,7 @@ const Topbar = () => {
                                         <span>Cart</span>
                                     </span>
                                 </Link>
-                                <Link
+                                {/* <Link
                                     href="/Wishlist"
                                     className="flex items-center space-x-1"
                                 >
@@ -162,7 +162,7 @@ const Topbar = () => {
                                         <Star className="text-gray-700" />
                                         <span>Wishlist</span>
                                     </span>
-                                </Link>
+                                </Link> */}
                                 <p className="flex  items-center text-red-500 hover:text-red-700 cursor-pointer">
                                     <span
                                         onClick={() => auth.signOut()}

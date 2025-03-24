@@ -67,65 +67,77 @@ const ProductDetails = ({ id, category }) => {
     f();
   }, [id]);
 
-  const handleAddToCart = async () => {
-    console.log("please login");
-    if (!user || !user.email) {
-      console.log("Please login to add items to cart");
-      toast.error("Please login to add items to cart");
-      return;
-    }
-    if (!productData) return;
+  
+const handleAddToCart = async () => {
+  if (!user || !user.email) {
+    toast.error("Please login to add items to cart");
+    return;
+  }
+  if (!productData) return;
 
-    const isItemInCart = isInCart(productData.id);
-
-    // Update local cart
-    if (isItemInCart) {
-      removeFromCart({ id: productData.id });
-    } else {
-      addToCart({
-        id: productData.id,
-        category: productData.product.category,
-        name: productData.product.name,
-        price: productData.product.price,
-        // discountPrice: productData.product.strikePrice,
-        image: productData.imageUrls[0],
-        quantity: orderCount,
-      });
-    }
-    const email = user.email;
-    const res = await handleFirebaseCartUpdate(email, productData, orderCount);
-    console.log("res", res);
-
-    if (res.success) {
-      toast.success(res.message);
-    } else {
-      toast.error(res.message);
-    }
+  const cartItem = {
+    id: productData.id,
+    category: productData.product.category,
+    name: productData.product.name,
+    image: productData.imageUrls[0],
+    quantity: orderCount,
+    price: productData.product.price,
+    Discount: productData.product.Discount,
+    Shipping: productData.product.Shipping,
+    Sourcing: productData.product.Sourcing,
   };
+
+  // Update local cart state.
+  if (isInCart(productData.id)) {
+    removeFromCart({ id: productData.id });
+  } else {
+    addToCart(cartItem);
+  }
+
+  const res = await handleFirebaseCartUpdate(user.email, cartItem, orderCount);
+  console.log("res", res);
+
+  if (res.success) {
+    toast.success(res.message);
+  } else {
+    toast.error(res.message);
+  }
+};
   const handleAddToWishList = async () => {
     if (!user || !user.email) {
-      toast.show("Please login to add items to wishlist");
+      toast.error("Please login to add items to wishlist");
       return;
     }
     if (!productData) return;
 
-    const isItemInWishList = isInWishList(productData.id);
+    // Build the same simplified object for wishlist.
+    const wishListItem = {
+      id: productData.id,
+      category: productData.product.category,
+      name: productData.product.name,
+      image: productData.imageUrls[0],
+      quantity: orderCount,
+      price: productData.product.price,
+      Discount: productData.product.Discount,
+      Shipping: productData.product.Shipping,
+      Sourcing: productData.product.Sourcing,
+    };
 
-    // Update local wishlist
-    if (isItemInWishList) {
+    // If the item is already in wishlist, remove it; otherwise, add it.
+    if (isInWishList(productData.id)) {
       removeFromWishList({ id: productData.id });
     } else {
-      addToWishList({
-        id: productData.id,
-        category: productData.product.category,
-        name: productData.product.name,
-        price: productData.product.price,
-        // discountPrice: productData.product.strikePrice,
-        image: productData.imageUrls[0],
-      });
+      addToWishList(wishListItem);
+
+      // Additionally, if the item exists in the cart, remove it.
+      if (isInCart(productData.id)) {
+        removeFromCart({ id: productData.id });
+        await handleFirebaseCartUpdate(user.email, wishListItem, orderCount);
+      }
     }
-    const email = user.email;
-    const res = await handleFirebaseWishListUpdate(email, productData);
+
+    // Now update Firebase for wishlist.
+    const res = await handleFirebaseWishListUpdate(user.email, wishListItem);
     console.log("res", res);
 
     if (res.success) {
@@ -231,11 +243,11 @@ const ProductDetails = ({ id, category }) => {
                 <div className="w-full flex justify-start items-center gap-[3rem]">
                   <span className="text-3xl font-bold mr-2 flex items-center gap-2">
                     <span>
-                      ₹{" "}
+                      Rs{" "}
                       {(parseInt(productData?.product?.price) || 0) +
                         (parseInt(productData?.product?.Shipping) || 0) +
                         (parseInt(productData?.product?.Sourcing) || 0) -
-                        (parseInt(productData?.product.Discount) || 0)}
+                        (parseInt(productData?.product?.Discount) || 0)}
                     </span>
                     {productData?.product.Discount && (
                       <span className="text-sm line-through font-light">
@@ -268,7 +280,7 @@ const ProductDetails = ({ id, category }) => {
                     </span>
                   </span>
 
-                  <button
+                  {/* <button
                     className="mb-2 flex justify-left items-end    gap-5"
                     onClick={handleAddToWishList}
                   >
@@ -284,7 +296,7 @@ const ProductDetails = ({ id, category }) => {
                     ) : (
                       <Heart color="#ff0000" absoluteStrokeWidth />
                     )}
-                  </button>
+                  </button> */}
                 </div>
               </div>
               <div className="mb-4    text-sm ">

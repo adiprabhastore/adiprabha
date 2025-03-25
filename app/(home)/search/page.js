@@ -1,15 +1,13 @@
 "use client";
 import React, { Suspense, useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import { fetchBooksByName } from "@/api/search/fetchBooksByName";
-import { fetchBooksByCollection } from "@/api/search/fetchBooksByCollection";
-import { fetchBookByISBN } from "@/api/search/fetchBookByISBN";
 import { PropagateLoader } from "react-spinners";
 
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Link from "next/link";
+import { fetchBook } from "@/api/search/fetchBook";
 
 const SearchContent = () => {
     const [startSearching, setStartSearching] = useState(true);
@@ -20,41 +18,42 @@ const SearchContent = () => {
     const [searchResults, setSearchResults] = useState([]);
 
     useEffect(() => {
-        const fetchData = async () => {
-            setSearchResults([]);
-            setStartSearching(true);
+      const fetchData = async () => {
+        setSearchResults([]);
+        setStartSearching(true);
 
-            console.log("fetching query result");
+        console.log("fetching query result");
 
-            if (type === "BOOKS" && query) {
-                try {
-                    const data = await fetchBooksByName(query);
-                    setSearchResults(data);
-                    console.log("book data", data);
-                } catch (error) {
-                    console.error("Error fetching book data:", error);
-                }
-            } else if (type === "CATEGORIES" && query) {
-                try {
-                    const data = await fetchBooksByCollection(query);
-                    setSearchResults(data);
-                    console.log("book data", data);
-                } catch (error) {
-                    console.error("Error fetching book data:", error);
-                }
-            } else if (type === "ISBN" && query) {
-                try {
-                    const data = await fetchBookByISBN(query);
-                    setSearchResults(data);
-                    console.log("book data", data);
-                } catch (error) {
-                    console.error("Error fetching book data:", error);
-                }
+        if (query) {
+          try {
+            let data = [];
+            switch (type) {
+              case "BOOKS":
+                data = await fetchBook({ type: "name", value: query });
+                break;
+              case "CATEGORIES":
+                data = await fetchBook({ type: "collection", value: query });
+                break;
+              case "ISBN":
+                data = await fetchBook({ type: "isbn", value: query });
+                break;
+              default:
+                throw new Error("Invalid search type");
             }
-            setStartSearching(false);
-        };
 
-        fetchData(); // Call the async function
+            setSearchResults(data);
+            console.log("book data", data);
+          } catch (error) {
+            console.error("Error fetching book data:", error);
+          } finally {
+            setStartSearching(false);
+          }
+        } else {
+          setStartSearching(false);
+        }
+      };
+
+      fetchData();
     }, [query, type]);
 
     console.log("query is", query);

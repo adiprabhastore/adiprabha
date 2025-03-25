@@ -3,14 +3,12 @@ import { fetchAllCollectionsData } from "@/api/fetchAllCollections";
 import { db } from "@/db/firebase";
 import { deleteDoc, doc } from "firebase/firestore";
 import Image from "next/image";
-import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import UpdateComp from "./Update";
 import { Edit, Search } from "lucide-react";
-import { fetchBooksByName } from "@/api/search/fetchBooksByName";
-import { fetchBookByISBN } from "@/api/search/fetchBookByISBN";
+
 
 const ITEMS_PER_PAGE = 10;
 
@@ -59,13 +57,15 @@ const Home = () => {
       if (search) {
         console.log("Fetching query result");
         let resultData = [];
+
         if (type === "BOOKS" || type === "") {
-          resultData = await fetchBooksByName(search);
+          resultData = await fetchBook({ type: "name", value: search });
         } else if (type === "ISBN") {
-          resultData = await fetchBookByISBN(search);
+          resultData = await fetchBook({ type: "isbn", value: search });
         } else if (type === "ITEM CODE") {
-          resultData = await fetchBookByItemCode(search);
+          resultData = await fetchBook({ type: "itemCode", value: search });
         }
+
         if (!resultData.length) {
           console.log("No data found");
           toast.error("No data found");
@@ -73,7 +73,7 @@ const Home = () => {
         }
         setFetchedData(resultData);
       } else {
-        // If no search term or type, reset to initial data.
+        // If no search term or type, reset to initial data
         setFetchedData(data);
       }
     } catch (error) {
@@ -387,7 +387,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { fetchBookByItemCode } from "@/api/search/fetchBookByItemCode";
+import { fetchBook } from "@/api/search/fetchBook";
 
 function ComboboxDemo({ type, setType }) {
   const [open, setOpen] = useState(false);

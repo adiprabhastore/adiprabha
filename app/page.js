@@ -25,6 +25,7 @@ export default function Home() {
     return (
         <section className="text-4xl w-[100vw] ">
             <LandingPage />
+            "code"
         </section>
     );
 }
